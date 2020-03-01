@@ -500,7 +500,12 @@ export default {
         this.time = setInterval(function() {
           console.log(that.tableData);
           that.getPeopleList();
-        }, 8000);
+          that.drawLine1();
+            that.drawLine2();
+            that.drawLine3();
+            that.drawLine5();
+            that.drawLine6();
+        }, 3500);
       }
     },
     //计算当天的合格率，返回异常个数和正常个数
