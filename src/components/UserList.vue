@@ -21,6 +21,7 @@
             <template scope="scope">
               <el-button
                 size="small"
+                type="success"
                 @click="handleRowEdit(scope.$index, scope.row)"
               >查看</el-button>
               <!--              <el-button  size="small" type="danger" @click="handleRowDelete(scope.$index, scope.row)">删除</el-button> -->
@@ -137,7 +138,7 @@ export default {
       if(!valid) return
 
       //可以发送起用户的网络请求
-      this.axios.post('http://129.226.50.167:3000/user',this.addfrom).then(response=>{
+      this.axios.post('http://47.97.251.68:3000/user',this.addfrom).then(response=>{
           if (response.status === 201) {
                 this.$message({
                   type: "success",
