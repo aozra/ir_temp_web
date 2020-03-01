@@ -213,12 +213,11 @@ export default {
       });
     },
     drawLine5() {
-        
+        console.log('我要的东西',this.temperatureData24)
       this.temperatureData24.map(function(item) {
-        item.createdAt = new Date(item.createdAt).toUTCString().slice(17, 22);
-        item.createdAt = Number(item.createdAt);
+        item.createdAt = parseInt(new Date(item.createdAt).toUTCString().slice(17, 19))
+        //item.createdAt = Number(item.createdAt);
       });
-      console.log("ssss", this.temperatureData24);
       // 基于准备好的dom，初始化echarts实例
       let data = [];
       this.temperatureData24.map(item => {
