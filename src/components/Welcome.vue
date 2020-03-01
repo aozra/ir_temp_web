@@ -90,7 +90,7 @@ export default {
       that.drawLine3();
       that.drawLine5();
       that.drawLine6();
-    }, 500);
+    }, 400);
   },
   beforeDestroy() {
     clearInterval(this.time);
@@ -213,8 +213,9 @@ export default {
       });
     },
     drawLine5() {
+        
       this.temperatureData24.map(function(item) {
-        item.createdAt = new Date(item.createdAt).toUTCString().slice(17, 19);
+        item.createdAt = new Date(item.createdAt).toUTCString().slice(17, 22);
         item.createdAt = Number(item.createdAt);
       });
       console.log("ssss", this.temperatureData24);
@@ -289,11 +290,18 @@ export default {
       });
     },
     rowClick(row) {
-      console.log(row);
-      //日期可读化
-      this.temperatureData.map(item => item.createdAt.slice(11, 19));
-      console.log("this.temperatureData", this.temperatureData);
-      //
+      console.log(row)
+    console.log('rowClick里的this.temperatureData',this.temperatureData)
+        //日期可读化
+        //如果，等于数字
+    if(isNaN(this.temperatureData[0].createdAt) == false){
+        this.temperatureData.map(function(item){
+            item.createdAt = (new Date(item.createdAt)).toUTCString().slice(17,22)
+        })   
+    }
+    this.temperatureData.map(item=> item.createdAt.slice(11,19))
+        console.log('this.temperatureData',this.temperatureData)
+        //
       let temptime = [];
       let temptem = [];
       let tempshow = this.temperatureData.filter(function(item) {
@@ -337,6 +345,7 @@ export default {
       const res = await this.axios.get("http://47.97.251.68:3000/temp");
 
       this.temperatureData = res.data;
+      
       this.temperatureData.reverse();
       //取
       this.temperatureData.map(
@@ -432,13 +441,15 @@ export default {
       // console.log('33',this.temperatureData )
       //数组倒叙并取前三
       this.tableData.reverse();
-
+        
       console.log('this.tableData',this.tableData)
       console.log('lastTimeLength: ' + this.lastTimeLength);
       console.log('this.tableData[0].temp: ' + this.tableData[0].temp);
 
       if (this.isFirst) {
         this.isFirst = false;
+        this.lastTimeLength = this.tableData.length;
+      this.tableData = this.tableData.slice(0, 3)
 
         return;
       }
@@ -454,9 +465,9 @@ export default {
         }
   
       }
-
-      this.tableData = this.tableData.slice(0, 3);
+       
       //选出体温超过37.5的人
+      this.tableData = this.tableData.slice(0, 3)
       this.overTemperatureData = this.tableData.filter(item=>item.temp >=37.5)
 
       
@@ -490,7 +501,7 @@ export default {
         this.time = setInterval(function() {
           console.log(that.tableData);
           that.getPeopleList();
-        }, 3000);
+        }, 8000);
       }
     },
     //计算当天的合格率，返回异常个数和正常个数
