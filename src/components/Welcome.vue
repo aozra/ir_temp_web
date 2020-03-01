@@ -37,6 +37,11 @@ export default {
   name: "hello",
   data() {
     return {
+      dialogVisible: false,
+      isFirst: true,
+      lastTimeLength: 0,
+        soundIsOn:false,
+        soundtime:0,
       time: 0,
       //当前的页数
       pagenum: 11,
@@ -408,6 +413,8 @@ export default {
       // console.log('overTemperatureData',this.overTemperatureData )
     },
     async getPeopleList2() {
+
+        
       const res = await this.axios.get("http://47.97.251.68:3000/temp");
 
       // this.temperatureData = res.data
@@ -425,21 +432,57 @@ export default {
       // console.log('33',this.temperatureData )
       //数组倒叙并取前三
       this.tableData.reverse();
+
+      console.log('this.tableData',this.tableData)
+      console.log('lastTimeLength: ' + this.lastTimeLength);
+      console.log('this.tableData[0].temp: ' + this.tableData[0].temp);
+
+      if (this.isFirst) {
+        this.isFirst = false;
+
+        return;
+      }
+
+      if(this.tableData.length !== this.lastTimeLength){
+
+
+        this.lastTimeLength = this.tableData.length;
+
+        if (this.tableData.length > 0 && this.tableData[0].temp >= 37.5) {
+          this.showNotify();
+
+        }
+  
+      }
+
       this.tableData = this.tableData.slice(0, 3);
       //选出体温超过37.5的人
       this.overTemperatureData = this.tableData.filter(item=>item.temp >=37.5)
-      console.log('overTemperatureData',this.overTemperatureData )
 
-      if(this.overTemperatureData.length>0){
-          var sound = new Howl({
-        src: ["./waring.mp3"]
+      
+      console.log("this.tableData", this.tableData);
+    },
+
+    showNotify() {
+
+    //   this.$notify({
+    //     title: "紧急通报",
+    //     message: "您有新的紧急通报，请及时处理",
+    //     type: "warning",
+    //     duration: 0,
+    //     onClose: () => {
+    //       this.dialogVisible = false;
+    //       this.closeDevice();
+    //     }
+    //   });
+
+      var sound = new Howl({
+        src: ['waring.mp3']
       });
 
       sound.play();
-      console.log('发出声音')
-      }
-      
-      console.log("this.tableData", this.tableData);
+      console.log('paly sound');
+    //   this.dialogVisible = true;
     },
     updateTable() {
       if (!this.time) {
