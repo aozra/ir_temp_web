@@ -93,6 +93,7 @@ export default {
             var myChart = echarts.init(document.getElementById('myChart4'));
             // 绘制图表
             myChart.setOption({
+                 color: ['#3398DB'],
                 title: {
                     text: 'ECharts 入门示例'
                 },
@@ -174,15 +175,11 @@ export default {
     }
     }
 </script>
-<style  scoped>
+<style  lang="less" scoped>
     .flex{
         display: flex;
         flex-wrap:wrap;
-        background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
         width:100%;
         height: 100%;
-    }
-    .el-main{
-        padding: 0;
     }
 </style>

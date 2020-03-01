@@ -9,25 +9,25 @@
 
     <!--卡片视图区域-->
     <el-card class="box-card">
-      <el-table ref="filterTable" :data="tableData" style="width: 100%">
+      <div class='divback'><el-button type='primary' @click='goback'>返回</el-button> </div>
+      <el-table ref="filterTable" :data="tableData" style="width: 100%" border="">
         <el-table-column
-          prop="date"
+          prop="createdAt"
           label="日期"    
-          width="180"
+         
         ></el-table-column>
-        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址" ></el-table-column>
+        <el-table-column prop="temp" label="温度（℃）" ></el-table-column>
         <el-table-column
           prop="tag"
           label="是否正常"
-          width="100"
+   
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.tag >= 37 ? 'danger' : 'success'"
+              :type="scope.row.tag >= 37.3 ? 'danger' : 'success'"
               disable-transitions
-            >{{scope.row.tag >=37 ?'异常':'正常'}}</el-tag>
+            >{{scope.row.tag >=37.3 ?'异常':'正常'}}</el-tag>
           </template>
         </el-table-column>
       </el-table>
@@ -38,38 +38,35 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag:36
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-          tag: 37
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-          tag: 36
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-          tag: 37
-        }
-      ]
+      hm:'',
+      tableData:[]
     };
   },
   methods: {
-     
+     goback(){
+         this.$router.push({
+        name:'userlist'
+      });
+     },
+     getpersondata(){
+        this.axios.get('http://129.226.50.167:3000/temp',this.hm).then(response=>{
+          if(response.status==200){
+            this.tableData=response.data
+          }
+        })
+     }
+  },
+  mounted(){
+     this.hm = this.$route.query.hm|| '';
+     this.getpersondata();
   }
 };
 </script>>
 <style lang="less" scoped>
+.divback{
+ float: right;
+  display: flex;
+  justify-content: end;
+  margin-bottom: 10px;
+}
 </style>

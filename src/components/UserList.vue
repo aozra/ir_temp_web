@@ -11,11 +11,9 @@
     <el-card class="box-card">
       <el-button type="primary" @click="dialogVisible = true">添加用户</el-button>
       <el-table :data="tableData" stripe style="width: 100%" border>
-        <el-table-column prop="date" label="编号" width="180"></el-table-column>
         <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="temperature" label="测试温度" width="180"></el-table-column>
-        <el-table-column prop="date" label="测试时间" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
+          <el-table-column prop="phone" label="联系方式" width="180"></el-table-column>
+        <el-table-column prop="position" label="地址"></el-table-column>
              <el-table-column
             label="操作"
             min-width="80"
@@ -31,7 +29,7 @@
       </el-table>
 
       <!--分页-->
-      <el-pagination
+      <!-- <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pagenum"
@@ -39,7 +37,7 @@
         :page-size="pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      ></el-pagination>
+      ></el-pagination> -->
     </el-card>
     <!--这是一个from表单-->
     <el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%" @close='addDialogClosed'>
@@ -51,19 +49,19 @@
         label-width="70px"
 
       >
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="addfrom.username"></el-input>
+        <el-form-item label="用户名" prop="name">
+          <el-input v-model="addfrom.name"></el-input>
         </el-form-item>
-        <el-form-item label="工号" prop="num">
-          <el-input v-model="addfrom.num
+        <el-form-item label="健康码" prop="hm">
+          <el-input v-model="addfrom.hm
           "></el-input>
         </el-form-item>
-          <el-form-item label="住址" prop="address">
-          <el-input  type="textarea"  v-model="addfrom.address
+          <el-form-item label="住址" prop="position">
+          <el-input  type="textarea"  v-model="addfrom.position
           "></el-input>
         </el-form-item>
-          <el-form-item label="电话" prop="mobile">
-          <el-input v-model="addfrom.mobile
+          <el-form-item label="电话" prop="phone">
+          <el-input v-model="addfrom.phone
           "></el-input>
         </el-form-item>
       </el-form>
@@ -87,26 +85,26 @@ export default {
      }
     return {
       addfrom:{
-        username:'',
-        num:'',
-        address:'',
-        mobile:''
+        name:'',
+        hm:'',
+        position:'',
+        phone:''
 
       },
       addfromRules:{
-        username:[
+       name:[
            { required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 2, max: 10, message: '长度在 2到  10个字符', trigger: 'blur' }
         ],
-            address:[
+            position:[
            { required: true, message: '请输入用户地址', trigger: 'blur' },
             { min: 2, max: 50, message: '长度在 2到  50个字符', trigger: 'blur' }
         ],
-        num:[
+        hm:[
           { required: true, message: '工号不能为空'},
-         { type: 'number', message: '工号必须为数字值'}
+        //  { type: 'number', message: '工号必须为数字值'}
         ],
-        mobile:[
+        phone:[
           { required: true, message: '请输入用户电话', trigger: 'blur' },
             {validator:checkMobile,trigger:'blur' },
         ]
@@ -117,32 +115,7 @@ export default {
       //当前显示几条数据
       pagesize: 1,
       total: 50,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          temperature: "36"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-          temperature: "36"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-          temperature: "38"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-          temperature: "37"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -164,31 +137,44 @@ export default {
       if(!valid) return
 
       //可以发送起用户的网络请求
-      // this.axios.post().then(respone=>{
-      //     if (response.data.errno === 0) {
-      //           this.$message({
-      //             type: "success",
-      //             message: "保存成功"
-      //           });
-      //          this.dialogVisible=false
-      //          //重新刷新一下列表
-      //         } else {
-      //           this.$message({
-      //             type: "error",
-      //             message: "保存失败,请检查相关内容"
-      //           });
-      //         }
-      // })
+      this.axios.post('http://129.226.50.167:3000/user',this.addfrom).then(response=>{
+          if (response.status === 201) {
+                this.$message({
+                  type: "success",
+                  message: "保存成功"
+                });
+               this.dialogVisible=false
+               //重新刷新一下列表
+               this.getUserData();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: "保存失败,请检查相关内容"
+                });
+              }
+      
+      })
       })
     },
        handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "informationreg", query: { id: row.id } });
+      this.$router.push({ name: "informationreg", query: { hm: row.hm} });
     },
+    getUserData(){
+     this.axios.get('http://129.226.50.167:3000/user').then(response=>{
+       console.log(response.data)
+       if(response.status==200){
+         this.tableData=response.data
+       }
+     })
+    }
+  },
+ mounted(){
+   this.getUserData();
   }
 };
 </script>>
-<style  scoped>
+<style lang="less" scoped>
 .el-button {
   margin: 10px 10px;
 }
