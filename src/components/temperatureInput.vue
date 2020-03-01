@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p @click="showTemperatureInput">
-      点击进入体温录入模块
+    <p>
+      测试input
     </p>
     <p>
       点击进入监管展示模块
@@ -17,11 +17,11 @@ export default {
     msg: String
   },
   methods:{
-    showTemperatureInput(){
-      this.$router.push({
-        name: "temperatureinput",
-      });
-    }
+    // showProject(index){
+    //   this.$router.push({
+    //     name: "ShowProject",
+    //   });
+    // }
   }
 }
 </script>
