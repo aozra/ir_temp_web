@@ -13,7 +13,9 @@
             <span :style="{ color: scope.row.temp >37.3? '#ED3F14' : '#ccc' }">{{ scope.row.temp }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="测试时间"></el-table-column>
+        <el-table-column prop="createdAt" label="测试时间" >
+            <template slot-scope="scope">{{scope.row.createdAt | date }}</template>
+        </el-table-column>
       </el-table>
 
       <!--分页-->
@@ -32,6 +34,8 @@
 <script>
 import echarts from "echarts";
 import { Howl } from "howler";
+import dayjs from "dayjs";
+
 // import func from '../../vue-temp/vue-editor-bridge'
 export default {
   name: "hello",
@@ -77,6 +81,12 @@ export default {
       ],
       msg: "Welcome to Your Vue.js App"
     };
+  },
+   filters: {
+    date(val) {
+      // 过滤器过滤时间格式
+      return dayjs(val).format("HH:mm");
+    }
   },
   created() {
     this.updateTable();
@@ -431,9 +441,9 @@ export default {
 
       // console.log(this.temperatureData )
       //日期可读化
-      this.tableData.map(
-        item => (item.createdAt = item.createdAt.slice(11, 19))
-      );
+    //   this.tableData.map(
+    //     item => (item.createdAt = item.createdAt.slice(11, 19))
+    //   );
 
       // this.temperatureData = a.map(item=>item.createdAt = new Date(item.createdAt).getTime())
       // console.log('res.data',res.data )
