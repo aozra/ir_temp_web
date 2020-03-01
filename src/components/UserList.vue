@@ -162,7 +162,7 @@ export default {
       this.$router.push({ name: "informationreg", query: { hm: row.hm} });
     },
     getUserData(){
-     this.axios.get('http://129.226.50.167:3000/user').then(response=>{
+     this.axios.get('http://47.97.251.68:30/user').then(response=>{
        console.log(response.data)
        if(response.status==200){
          this.tableData=response.data
