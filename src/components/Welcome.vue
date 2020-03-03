@@ -1,11 +1,12 @@
 <template>
   <div class="flex">
-    <div id="myChart6" :style="{width: '300px', height: '300px'}"></div>
-    <div id="myChart2" :style="{width: '300px', height: '300px'}"></div>
-    <div id="myChart3" :style="{width: '300px', height: '300px'}"></div>
-    <div id="myChart5" :style="{width: '300px', height: '300px'}"></div>
-    <div id="myChart1" :style="{width: '300px', height: '300px'}"></div>
+    <div id="myChart6" :style="{width: '480px', height: '300px'}"></div>
+    <div id="myChart2" :style="{width: '480px', height: '300px'}"></div>
+    <div id="myChart3" :style="{width: '480px', height: '300px'}"></div>
+    <div id="myChart5" :style="{width: '480px', height: '300px'}"></div>
+    <div id="myChart1" :style="{width: '480px', height: '300px'}"></div>
     <el-card class="box-card">
+        <div class='title'>最新体温检测人员</div>
       <el-table :data="tableData" stripe border @row-click="rowClick">
         <el-table-column prop="userName" label="姓名"></el-table-column>
         <el-table-column prop="temp" label="测试温度">
@@ -548,18 +549,25 @@ export default {
 </script>
 <style  scoped>
 .flex {
-  margin: -20px;
-  padding: 20px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
   width: 100%;
   height: 100%;
+  
 }
 .el-main {
   padding: 0;
 }
 .box-card {
   opacity: 0.9;
+  height: 268px;
+}
+.title{
+    text-align: center;
+    margin: 10px 0;
+    color: #909399;
+    font-weight: 600;
 }
 </style>
