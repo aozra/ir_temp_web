@@ -1,21 +1,26 @@
 <template>
   <div class="flex">
-    <div id="myChart6" :style="{width: '480px', height: '300px'}"></div>
-    <div id="myChart2" :style="{width: '480px', height: '300px'}"></div>
-    <div id="myChart3" :style="{width: '480px', height: '300px'}"></div>
-    <div id="myChart5" :style="{width: '480px', height: '300px'}"></div>
-    <div id="myChart1" :style="{width: '480px', height: '300px'}"></div>
+    <div id="myChart6" :style="{ width: '480px', height: '300px' }"></div>
+    <div id="myChart2" :style="{ width: '480px', height: '300px' }"></div>
+    <div id="myChart3" :style="{ width: '480px', height: '300px' }"></div>
+    <div id="myChart5" :style="{ width: '480px', height: '300px' }"></div>
+    <div id="myChart1" :style="{ width: '480px', height: '300px' }"></div>
     <el-card class="box-card">
-        <div class='title'>最新体温检测人员</div>
+      <div class="title">最新体温检测人员</div>
       <el-table :data="tableData" stripe border @row-click="rowClick">
         <el-table-column prop="userName" label="姓名"></el-table-column>
         <el-table-column prop="temp" label="测试温度">
           <template slot-scope="scope">
-            <span :style="{ color: scope.row.temp >37.3? '#ED3F14' : '#ccc' }">{{ scope.row.temp }}</span>
+            <span
+              :style="{ color: scope.row.temp > 37.3 ? '#ED3F14' : '#ccc' }"
+              >{{ scope.row.temp }}</span
+            >
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="测试时间" >
-            <template slot-scope="scope">{{scope.row.createdAt | date }}</template>
+        <el-table-column prop="createdAt" label="测试时间">
+          <template slot-scope="scope">{{
+            scope.row.createdAt | date
+          }}</template>
         </el-table-column>
       </el-table>
 
@@ -45,8 +50,8 @@ export default {
       dialogVisible: false,
       isFirst: true,
       lastTimeLength: 0,
-        soundIsOn:false,
-        soundtime:0,
+      soundIsOn: false,
+      soundtime: 0,
       time: 0,
       //当前的页数
       pagenum: 11,
@@ -67,27 +72,27 @@ export default {
         {
           createdAt: "8:20",
           userName: "王小虎",
-          temp: "36"
+          temp: "36",
         },
         {
           createdAt: "8:30",
           userName: "王小虎",
-          temp: "36"
+          temp: "36",
         },
         {
           createdAt: "8:40",
           userName: "王小虎",
-          temp: "38"
-        }
+          temp: "38",
+        },
       ],
-      msg: "Welcome to Your Vue.js App"
+      msg: "Welcome to Your Vue.js App",
     };
   },
-   filters: {
+  filters: {
     date(val) {
       // 过滤器过滤时间格式
       return dayjs(val).format("HH:mm");
-    }
+    },
   },
   created() {
     this.updateTable();
@@ -95,7 +100,7 @@ export default {
   },
   mounted() {
     let that = this;
-    setTimeout(function() {
+    setTimeout(function () {
       that.drawLine1();
       that.drawLine2();
       that.drawLine3();
@@ -109,22 +114,22 @@ export default {
   methods: {
     drawLine1() {
       let that = this;
-      that.axios.get("http://47.97.251.68:3000/temp").then(res => {
+      that.axios.get("http://47.96.85.224:3000/temp").then((res) => {
         that.temperatureData = res.data;
         that.temperatureData.reverse();
         //日期可读化
         this.temperatureData.map(
-          item => (item.createdAt = item.createdAt.slice(11, 19))
+          (item) => (item.createdAt = item.createdAt.slice(11, 19))
         );
         console.log("that.temperatureData", that.temperatureData);
         //
         let temptime = [];
         let temptem = [];
-        let tempshow = that.temperatureData.filter(function(item) {
+        let tempshow = that.temperatureData.filter(function (item) {
           return item.userName == that.temperatureData[0].userName;
         });
         console.log("tempshow", tempshow);
-        tempshow.map(item => {
+        tempshow.map((item) => {
           temptime.push(item.createdAt);
           temptem.push(item.temp);
         });
@@ -136,21 +141,21 @@ export default {
         // 绘制图表
         myChart.setOption({
           title: {
-            text: "个人体温折线"
+            text: "个人体温折线",
           },
           xAxis: {
             type: "category",
-            data: temptime
+            data: temptime,
           },
           yAxis: {
-            type: "value"
+            type: "value",
           },
           series: [
             {
               data: temptem,
-              type: "line"
-            }
-          ]
+              type: "line",
+            },
+          ],
         });
       });
     },
@@ -175,21 +180,21 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: "测量合格率折线"
+          text: "测量合格率折线",
         },
         xAxis: {
           type: "category",
-          data: ["1天前", "2天前", "3天前", "4天前", "5天前", "6天前", "7天前"]
+          data: ["1天前", "2天前", "3天前", "4天前", "5天前", "6天前", "7天前"],
         },
         yAxis: {
-          type: "value"
+          type: "value",
         },
         series: [
           {
             data: [a, b, c, d, e, f, g],
-            type: "line"
-          }
-        ]
+            type: "line",
+          },
+        ],
       });
     },
     drawLine3() {
@@ -207,31 +212,33 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: "体温异常个数统计"
+          text: "体温异常个数统计",
         },
         tooltip: {},
         xAxis: {
-          data: ["1天前", "2天前", "3天前", "4天前", "5天前", "6天前", "7天前"]
+          data: ["1天前", "2天前", "3天前", "4天前", "5天前", "6天前", "7天前"],
         },
         yAxis: {},
         series: [
           {
             name: "销量",
             type: "bar",
-            data: [a[0], b[0], c[0], d[0], e[0], f[0], g[0]]
-          }
-        ]
+            data: [a[0], b[0], c[0], d[0], e[0], f[0], g[0]],
+          },
+        ],
       });
     },
     drawLine5() {
-        console.log('我要的东西',this.temperatureData24)
-      this.temperatureData24.map(function(item) {
-        item.createdAt = parseInt(new Date(item.createdAt).toUTCString().slice(17, 19))
+      console.log("我要的东西", this.temperatureData24);
+      this.temperatureData24.map(function (item) {
+        item.createdAt = parseInt(
+          new Date(item.createdAt).toUTCString().slice(17, 19)
+        );
         //item.createdAt = Number(item.createdAt);
       });
       // 基于准备好的dom，初始化echarts实例
       let data = [];
-      this.temperatureData24.map(item => {
+      this.temperatureData24.map((item) => {
         let tem = [];
         tem[0] = item.createdAt;
         tem[1] = item.temp;
@@ -243,20 +250,20 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: "体温分布散点"
+          text: "体温分布散点",
         },
         xAxis: {
-          scale: true
+          scale: true,
         },
         yAxis: {
-          scale: true
+          scale: true,
         },
         series: [
           {
             type: "scatter",
-            data: data
-          }
-        ]
+            data: data,
+          },
+        ],
       });
     },
     drawLine6() {
@@ -267,16 +274,16 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: "今日测量通过率"
+          text: "今日测量通过率",
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         legend: {
           orient: "vertical",
           left: "right",
-          data: ["体温异常", "体温正常"]
+          data: ["体温异常", "体温正常"],
         },
         series: [
           {
@@ -286,39 +293,39 @@ export default {
             center: ["50%", "60%"],
             data: [
               { value: overNumber, name: "体温异常" },
-              { value: notoverNumber, name: "体温正常" }
+              { value: notoverNumber, name: "体温正常" },
             ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
       });
     },
     rowClick(row) {
-      console.log(row)
-    console.log('rowClick里的this.temperatureData',this.temperatureData)
-        //日期可读化
-        //如果，等于数字
-    if(isNaN(this.temperatureData[0].createdAt) == false){
-        this.temperatureData.map(function(item){
-            item.createdAt = (new Date(item.createdAt)).toUTCString().slice(17,22)
-        })   
-    }
-    this.temperatureData.map(item=> item.createdAt.slice(11,19))
-        console.log('this.temperatureData',this.temperatureData)
-        //
+      console.log(row);
+      console.log("rowClick里的this.temperatureData", this.temperatureData);
+      //日期可读化
+      //如果，等于数字
+      if (isNaN(this.temperatureData[0].createdAt) == false) {
+        this.temperatureData.map(function (item) {
+          item.createdAt = new Date(item.createdAt).toUTCString().slice(17, 22);
+        });
+      }
+      this.temperatureData.map((item) => item.createdAt.slice(11, 19));
+      console.log("this.temperatureData", this.temperatureData);
+      //
       let temptime = [];
       let temptem = [];
-      let tempshow = this.temperatureData.filter(function(item) {
+      let tempshow = this.temperatureData.filter(function (item) {
         return item.userName == row.userName;
       });
       console.log("tempshow", tempshow);
-      tempshow.map(item => {
+      tempshow.map((item) => {
         temptime.push(item.createdAt);
         temptem.push(item.temp);
       });
@@ -330,21 +337,21 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: "个人体温折线"
+          text: "个人体温折线",
         },
         xAxis: {
           type: "category",
-          data: temptime
+          data: temptime,
         },
         yAxis: {
-          type: "value"
+          type: "value",
         },
         series: [
           {
             data: temptem,
-            type: "line"
-          }
-        ]
+            type: "line",
+          },
+        ],
       });
     },
     getPeopleList() {
@@ -352,14 +359,14 @@ export default {
       this.getPeopleList2();
     },
     async getPeopleList1() {
-      const res = await this.axios.get("http://47.97.251.68:3000/temp");
+      const res = await this.axios.get("http://47.96.85.224:3000/temp");
 
       this.temperatureData = res.data;
-      
+
       this.temperatureData.reverse();
       //取
       this.temperatureData.map(
-        item => (item.createdAt = new Date(item.createdAt).getTime())
+        (item) => (item.createdAt = new Date(item.createdAt).getTime())
       );
       console.log("this.temperatureData", this.temperatureData);
       //选出距今24小时。。的人的信息
@@ -369,7 +376,7 @@ export default {
       // this.temperatureData24 = this.temperatureData.filter(item=>{
       //         item.createdAt > time24 && item.createdAt < this.temperatureData[0].createdAt
       //     })
-      this.temperatureData24 = this.temperatureData.filter(function(item) {
+      this.temperatureData24 = this.temperatureData.filter(function (item) {
         return (
           item.createdAt > time24 &&
           item.createdAt <= that.temperatureData[0].createdAt
@@ -381,7 +388,7 @@ export default {
       //         item.createdAt > time48 && item.createdAt < time24
       //     })
       console.log("数据", this.temperatureData);
-      this.temperatureData48 = this.temperatureData.filter(function(item) {
+      this.temperatureData48 = this.temperatureData.filter(function (item) {
         return item.createdAt > time48 && item.createdAt < time24;
       });
       console.log("222", this.temperatureData48);
@@ -389,7 +396,7 @@ export default {
       //   this.temperatureData72 = this.temperatureData.filter(item => {
       //     item.createdAt > time72 && item.createdAt < time48;
       //   });
-      this.temperatureData72 = this.temperatureData.filter(function(item) {
+      this.temperatureData72 = this.temperatureData.filter(function (item) {
         return item.createdAt > time72 && item.createdAt < time48;
       });
       console.log("333", this.temperatureData72);
@@ -397,7 +404,7 @@ export default {
       //   this.temperatureData96 = this.temperatureData.filter(item => {
       //     item.createdAt > time96 && item.createdAt < time72;
       //   });
-      this.temperatureData96 = this.temperatureData.filter(function(item) {
+      this.temperatureData96 = this.temperatureData.filter(function (item) {
         return item.createdAt > time96 && item.createdAt < time72;
       });
       console.log("444", this.temperatureData96);
@@ -405,7 +412,7 @@ export default {
       //   this.temperatureData120 = this.temperatureData.filter(item => {
       //     item.createdAt > time120 && item.createdAt < time96;
       //   });
-      this.temperatureData120 = this.temperatureData.filter(function(item) {
+      this.temperatureData120 = this.temperatureData.filter(function (item) {
         return item.createdAt > time120 && item.createdAt < time96;
       });
       console.log("555", this.temperatureData120);
@@ -413,7 +420,7 @@ export default {
       //   this.temperatureData144 = this.temperatureData.filter(item => {
       //     item.createdAt > time144 && item.createdAt < time120;
       //   });
-      this.temperatureData144 = this.temperatureData.filter(function(item) {
+      this.temperatureData144 = this.temperatureData.filter(function (item) {
         return item.createdAt > time144 && item.createdAt < time120;
       });
       console.log("666", this.temperatureData144);
@@ -421,7 +428,7 @@ export default {
       //   this.temperatureData168 = this.temperatureData.filter(item => {
       //     item.createdAt > time168 && item.createdAt < time144;
       //   });
-      this.temperatureData168 = this.temperatureData.filter(function(item) {
+      this.temperatureData168 = this.temperatureData.filter(function (item) {
         return item.createdAt > time168 && item.createdAt < time144;
       });
       console.log("777", this.temperatureData168);
@@ -432,9 +439,7 @@ export default {
       // console.log('overTemperatureData',this.overTemperatureData )
     },
     async getPeopleList2() {
-
-        
-      const res = await this.axios.get("http://47.97.251.68:3000/temp");
+      const res = await this.axios.get("http://47.96.85.224:3000/temp");
 
       // this.temperatureData = res.data
 
@@ -442,86 +447,82 @@ export default {
 
       // console.log(this.temperatureData )
       //日期可读化
-    //   this.tableData.map(
-    //     item => (item.createdAt = item.createdAt.slice(11, 19))
-    //   );
+      //   this.tableData.map(
+      //     item => (item.createdAt = item.createdAt.slice(11, 19))
+      //   );
 
       // this.temperatureData = a.map(item=>item.createdAt = new Date(item.createdAt).getTime())
       // console.log('res.data',res.data )
       // console.log('33',this.temperatureData )
       //数组倒叙并取前三
       this.tableData.reverse();
-        
-      console.log('this.tableData',this.tableData)
-      console.log('lastTimeLength: ' + this.lastTimeLength);
-      console.log('this.tableData[0].temp: ' + this.tableData[0].temp);
+
+      console.log("this.tableData", this.tableData);
+      console.log("lastTimeLength: " + this.lastTimeLength);
+      console.log("this.tableData[0].temp: " + this.tableData[0].temp);
 
       if (this.isFirst) {
         this.isFirst = false;
         this.lastTimeLength = this.tableData.length;
-      this.tableData = this.tableData.slice(0, 3)
+        this.tableData = this.tableData.slice(0, 3);
 
         return;
       }
 
-      if(this.tableData.length !== this.lastTimeLength){
-
-
+      if (this.tableData.length !== this.lastTimeLength) {
         this.lastTimeLength = this.tableData.length;
 
         if (this.tableData.length > 0 && this.tableData[0].temp >= 37.5) {
           this.showNotify();
-
         }
-  
       }
-       
-      //选出体温超过37.5的人
-      this.tableData = this.tableData.slice(0, 3)
-      this.overTemperatureData = this.tableData.filter(item=>item.temp >=37.5)
 
-      
+      //选出体温超过37.5的人
+      this.tableData = this.tableData.slice(0, 3);
+      this.overTemperatureData = this.tableData.filter(
+        (item) => item.temp >= 37.5
+      );
+
       console.log("this.tableData", this.tableData);
     },
 
     showNotify() {
-
-    //   this.$notify({
-    //     title: "紧急通报",
-    //     message: "您有新的紧急通报，请及时处理",
-    //     type: "warning",
-    //     duration: 0,
-    //     onClose: () => {
-    //       this.dialogVisible = false;
-    //       this.closeDevice();
-    //     }
-    //   });
+      //   this.$notify({
+      //     title: "紧急通报",
+      //     message: "您有新的紧急通报，请及时处理",
+      //     type: "warning",
+      //     duration: 0,
+      //     onClose: () => {
+      //       this.dialogVisible = false;
+      //       this.closeDevice();
+      //     }
+      //   });
 
       var sound = new Howl({
-        src: ['waring.mp3']
+        src: ["waring.mp3"],
       });
 
       sound.play();
-      console.log('paly sound');
-    //   this.dialogVisible = true;
+      console.log("paly sound");
+      //   this.dialogVisible = true;
     },
     updateTable() {
       if (!this.time) {
         let that = this;
-        this.time = setInterval(function() {
+        this.time = setInterval(function () {
           console.log(that.tableData);
           that.getPeopleList();
           that.drawLine1();
-            that.drawLine2();
-            that.drawLine3();
-            that.drawLine5();
-            that.drawLine6();
+          that.drawLine2();
+          that.drawLine3();
+          that.drawLine5();
+          that.drawLine6();
         }, 3500);
       }
     },
     //计算当天的合格率，返回异常个数和正常个数
     caclOverTemp(array) {
-      this.overTemperatureData = array.filter(item => item.temp >= 37.5);
+      this.overTemperatureData = array.filter((item) => item.temp >= 37.5);
       console.log("dd", this.overTemperatureData);
       // 基于准备好的dom，初始化echarts实例
       let overNumber = this.overTemperatureData.length;
@@ -533,7 +534,7 @@ export default {
       if (this.tableData[this.tableData.length - 1].temperature >= 37.5) {
         console.log("测试温度大于37.5");
       }
-    }
+    },
     // handleSizeChange(newsize){
     //    console.log(newsize)
     //    this.pagenum=newsize
@@ -544,7 +545,7 @@ export default {
     //     this.pagesize=newpage
     //     //调用方法
     // }
-  }
+  },
 };
 </script>
 <style  scoped>
@@ -555,7 +556,6 @@ export default {
   background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
   width: 100%;
   height: 100%;
-  
 }
 .el-main {
   padding: 0;
@@ -564,10 +564,10 @@ export default {
   opacity: 0.9;
   height: 268px;
 }
-.title{
-    text-align: center;
-    margin: 10px 0;
-    color: #909399;
-    font-weight: 600;
+.title {
+  text-align: center;
+  margin: 10px 0;
+  color: #909399;
+  font-weight: 600;
 }
 </style>
